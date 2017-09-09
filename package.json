@@ -1,0 +1,19 @@
+{
+  "name": "dcbhack",
+  "version": "1.0.0",
+  "description": "thoda kuch banane ki koshish",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/VibhorCodecianGupta/DCBhack.git"
+  },
+  "author": "vibhor",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/VibhorCodecianGupta/DCBhack/issues"
+  },
+  "homepage": "https://github.com/VibhorCodecianGupta/DCBhack#readme"
+}
