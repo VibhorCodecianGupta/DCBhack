@@ -82,7 +82,7 @@ router.post('/adhaar',function(req,res){
 });
 
   router.post('/createBlock',function(req,res){
-    console.log(req.body)
+    // console.log(req.body)
     const alice = new driver.Ed25519Keypair()
     const conn = new driver.Connection(
       'https://test.ipdb.io/api/v1/',
@@ -96,7 +96,7 @@ router.post('/adhaar',function(req,res){
         driver.Transaction.makeEd25519Condition(alice.publicKey))],
       alice.publicKey)
     const txSigned = driver.Transaction.signTransaction(tx, alice.privateKey)
-    // console.log(txSigned)
+    console.log(txSigned)
     conn.postTransaction(txSigned)
     .then(() => conn.pollStatusAndFetchTransaction(txSigned.id))
       .then(retrievedTx => console.log('Transaction', retrievedTx.id, 'successfully posted.'))

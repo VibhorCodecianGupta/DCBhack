@@ -10,11 +10,10 @@ var blockchain = require('./blockchain.js');
 
 
 app.use(morgan('dev'));
-
-app.use(routes);
 // require('./blockchain.js')(blockchain);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:false}));
 
+app.use(routes);
 app.listen(port);
 console.log('Magic happens on port ' + port);
