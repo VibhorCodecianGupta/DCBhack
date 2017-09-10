@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/VibhorCodecianGupta/DCBhack#readme",
   "dependencies": {
+    "bigchaindb-driver": "^0.3.0",
     "body-parser": "^1.18.0",
     "cookie-parser": "^1.4.3",
     "express": "^4.15.4",
