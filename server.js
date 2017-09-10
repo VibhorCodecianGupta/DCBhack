@@ -6,10 +6,13 @@ var bodyParser = require ('body-parser');
 var morgan = require('morgan');
 var port = process.env.PORT || 3000
 var routes = require('./controller.js');
+var blockchain = require('./blockchain.js');
+
 
 app.use(morgan('dev'));
 
-app.use(routes);
+// app.use(routes);
+require('./blockchain.js')(blockchain);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:false}));
 
