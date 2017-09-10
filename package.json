@@ -24,6 +24,7 @@
     "morgan": "^1.8.2",
     "path": "^0.12.7",
     "port": "^0.8.1",
-    "request": "^2.81.0"
+    "request": "^2.81.0",
+    "yodlee-transactions": "^1.0.7"
   }
 }

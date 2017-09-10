@@ -2,12 +2,14 @@ var express = require('express');
 var router = express.Router();
 var request = require ('request');
 const driver = require('bigchaindb-driver')
+var yodlee = require('yodlee-transactions');
 
 router.get('/',function(req,res){
   res.send('hello');
 });
 
 
+// =======================ADHAAR VERIFICATION==================================================
 router.post('/adhaar',function(req,res){
   console.log(req);
   var final = "";
@@ -81,6 +83,8 @@ router.post('/adhaar',function(req,res){
 
 });
 
+// ====================++CREATING BLOCK FOR THE USER============================
+
   router.post('/createBlock',function(req,res){
     // console.log(req.body)
     const alice = new driver.Ed25519Keypair()
@@ -101,6 +105,74 @@ router.post('/adhaar',function(req,res){
     .then(() => conn.pollStatusAndFetchTransaction(txSigned.id))
       .then(retrievedTx => console.log('Transaction', retrievedTx.id, 'successfully posted.'))
       .then(res.send(txSigned))
+  })
+
+
+
+
+// ============================+YODLEEE DATA AGGREGATION+=================================
+  router.post('/yodlee',function(req,res){
+    var cobrandUser = ""; //example format in sbCobxxxxx
+    var cobrandPassword = ""; //format is xxxx-xxx-xxx-xxx-xxxx the number of x is not accurate
+    var userName = ""; //example formats are sbMemxxxxx
+    var userPassword = ""; //example formate are in sbMemxxxxx
+    var cobSessionToken = "";
+    var userSessionToken = "";
+    var accounts = [];
+    
+    
+    function generateCobToken(cobrandUser, cobrandPassword){
+      return yodlee.getCobSession(cobrandUser, cobrandPassword)
+        .then(function(data){
+          var dataObj = JSON.parse(data);
+          cobSessionToken = dataObj.session.cobSession;
+          return cobSessionToken;
+        });
+    }
+    
+    function generateUserToken(userName, userPassword){
+      return function(cobSessionToken){
+        return yodlee.getUserSession(cobSessionToken, userName, userPassword)
+          .then(function(user){
+            var userObj = JSON.parse(user);
+            userSessionToken = userObj.session.userSession;
+            return userSessionToken;
+          });
+      }
+    }
+    
+    function getAccounts() {
+      return yodlee.getAccounts(cobSessionToken, userSessionToken)
+        .then(function(data){
+          var dataObj = JSON.parse(data);
+          accounts = [] //clearing it out kind of
+          for (var k in dataObj){
+            if (dataObj.hasOwnProperty(k)){
+              accounts.push(dataObj[k]);
+            }
+          }
+        })
+    }
+    
+    function getTransactions(accountId, fromDate, toDate) {
+      return yodlee.getTransactions(cobSessionToken, userSessionToken, accountId, fromDate, toDate)
+        .then(function(data){
+          return JSON.parse(data);
+        })
+    }
+    
+    function getCategorySpending(transactionObj) {
+      return yodlee.getCategorySpending(transactionObj);
+    }
+    
+    //Running here
+    generateCobToken(cobrandUser, cobrandPassword)
+      .then(generateUserToken(userName, userPassword))
+      .then(function(){
+        getAccounts();
+        getTransactions()
+          .then(getCategorySpending);
+      })
   })
 
 
