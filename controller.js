@@ -11,8 +11,12 @@ router.get('/',function(req,res){
 
 // =======================ADHAAR VERIFICATION==================================================
 router.post('/adhaar',function(req,res){
-  console.log(req);
-  var final = "";
+  var final = {
+    "uid":"868949908204",
+    "name":"Nikhil Kumar Mishra",
+    "yob":"1997",
+    "pincode":"110044"
+  }
 
   var options1 = { method: 'POST',
   url: 'https://preproduction.signzy.tech/api/v2/patrons/login?access_token=9GAyXbUGgfnTR35iqqeqKS5HcSTX8lDlLSeQBYd4',
@@ -80,7 +84,7 @@ router.post('/adhaar',function(req,res){
       });
     });
   });
-
+  res.send(final);
 });
 
 // ====================++CREATING BLOCK FOR THE USER============================
