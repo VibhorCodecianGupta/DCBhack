@@ -1,4 +1,4 @@
-module.exports = function (blckchain){
+module.exports = function (blockchain){
 	const driver = require('bigchaindb-driver')
 
 
